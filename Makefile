@@ -15,9 +15,9 @@ _WHITE    =\e[97m
 # Compiler and flags 
 ASM				= nasm
 CC				= gcc
-ASMFLAGS		= -f elf64
-CCFLAGS			= -Wall -Wextra -Werror
-LIB				= ar rcs $@ $^
+ASMFLAGS		= -f elf64		# -fPIC : for position independent code
+CCFLAGS			= -Wall -Wextra -Werror 	# -fPIE : for position independent executable
+LIB				= ar rcs $@ $^ 
 
 # Directory
 SRC_DIR			= source
