@@ -1,5 +1,4 @@
-section .text
-    global ft_strcpy            ; ft_strcpy(char *dest, const char *src)
+global ft_strcpy            ; ft_strcpy(char *dest, const char *src)
 
 ft_strcpy:
     xor rcx, rcx                ; Initialize rcx to 0, this will be our counter
