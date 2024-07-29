@@ -1,5 +1,4 @@
-section .text
-	global ft_strlen 				; ft_strlen(const char *str)
+global ft_strlen 				; ft_strlen(const char *str)
 
 ft_strlen:
 	xor rcx, rcx					; Initialize rcx to 0, this will be our counter
