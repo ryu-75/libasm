@@ -58,7 +58,7 @@ libasm.a		: $(ASM_OBJS)
 					@printf "\n$(_GREEN)$(_BOLD)Compiling process finish$(_R)\n"
 
 test			: libasm.a $(C_OBJ)
-					$(CC) $(CCFLAGS) -o $@ $(C_OBJ) libasm.a
+					$(CC) -no-pie $(CCFLAGS) -o $@ $(C_OBJ) libasm.a
 
 clean			:
 					@echo "Cleaning up object files..."
