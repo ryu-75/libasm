@@ -5,8 +5,15 @@
 #include <errno.h>
 #include <fcntl.h>
 
-// #include "libasm.a"
 
+typedef struct s_list {
+    void    *array;
+    struct s_list *next;
+}       t_list;
+
+t_list  *ft_push(t_list *list, void *new);
+
+extern int  ft_lst_size(t_list *list);
 extern size_t   ft_strlen(const char* str);
 extern char     *ft_strcpy(char* dest, const char* src);
 extern int      ft_strcmp(const char* s1, const char* s2);
@@ -112,5 +119,31 @@ int main() {
     printf("\e[91mdup\e[0m : %s = %s\n", text, otherText);
     free (otherText);
 
+
+
+    t_list  *new = NULL;
+    // if (new == NULL) {
+    //     new = malloc(sizeof(t_list));
+    // }
+
+    // new = ft_push(new, "1");
+
+
+    // new->next = ft_push(new, 5);
+    // new->next = NULL;
+    printf("%d\n", ft_lst_size(new));
+    while (new) {
+        printf("%p\n", new->array);
+        new = new->next; 
+    }
     return 0;
+}
+
+t_list  *ft_push(t_list *list, void *new) {
+    if (!list) {
+        list = malloc(sizeof(t_list));
+    }
+    list->array = new;
+    list->next = NULL;
+    return list;
 }
