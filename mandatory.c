@@ -5,22 +5,13 @@
 #include <errno.h>
 #include <fcntl.h>
 
-
-typedef struct s_list {
-    void    *array;
-    struct s_list *next;
-}       t_list;
-
-t_list  *ft_push(t_list *list, void *new);
-
-extern int  ft_lst_size(t_list *list);
 extern size_t   ft_strlen(const char* str);
 extern char     *ft_strcpy(char* dest, const char* src);
 extern int      ft_strcmp(const char* s1, const char* s2);
-
 extern ssize_t  ft_write(int fd, const void *buf, size_t count);
 extern char *ft_strdup(const char *s);
 extern ssize_t  ft_read(int fd, void *buf, size_t count);
+
 void    set_errno(int value) {
     errno = value;
 }
@@ -38,7 +29,7 @@ int main() {
 
     printf("***** \e[1mFT_STRCPY\e[0m*****\n");
 
-    char    *newStr = malloc(sizeof(char) * ft_strlen(text) + 1); 
+    char    *newStr = malloc(sizeof(char) * ft_strlen(text) + 1);
 
     if (newStr == NULL) {
         perror("malloc");
@@ -77,7 +68,7 @@ int main() {
 // **********************************************************************************************
 
     printf("***** \e[1mFT_READ\e[0m*****\n");
-    
+
     char    buf1[1024];
     int fd1 = open("source/ft_strlen.s", O_RDONLY);
 
@@ -103,10 +94,10 @@ int main() {
     ssize_t  bytes2 = ft_read(fd2, buf2, sizeof(buf2) - 1);
 
     buf2[bytes2] = '\0';
-    
+
     printf("\e[92mft_read: \e[0m'%s'\n", buf2);
     close(fd2);
-    
+
 // **********************************************************************************************
 
     printf("***** \e[1mFT_STRDUP\e[0m*****\n");
@@ -114,36 +105,8 @@ int main() {
     char    *otherText = ft_strdup(text);
     printf("\e[92mft_dup\e[0m : %s = %s\n", text, otherText);
     free (otherText);
-    
+
     otherText = strdup(text);
     printf("\e[91mdup\e[0m : %s = %s\n", text, otherText);
     free (otherText);
-
-
-
-    t_list  *new = NULL;
-    // if (new == NULL) {
-    //     new = malloc(sizeof(t_list));
-    // }
-
-    // new = ft_push(new, "1");
-
-
-    // new->next = ft_push(new, 5);
-    // new->next = NULL;
-    printf("%d\n", ft_lst_size(new));
-    while (new) {
-        printf("%p\n", new->array);
-        new = new->next; 
-    }
-    return 0;
-}
-
-t_list  *ft_push(t_list *list, void *new) {
-    if (!list) {
-        list = malloc(sizeof(t_list));
-    }
-    list->array = new;
-    list->next = NULL;
-    return list;
 }

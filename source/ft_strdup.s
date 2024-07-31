@@ -1,4 +1,4 @@
-global ft_strdup		; char *ft_strdup(const char *s)
+global ft_strdup	; char *ft_strdup(const char *s)
 extern malloc
 extern ft_strlen
 extern ft_strcpy
@@ -18,4 +18,4 @@ ft_strdup:
 
 err:
 	mov rax, -1		; set rax to -1 if malloc return -1
-    ret				; return sys_call 
+    ret				; return sys_call

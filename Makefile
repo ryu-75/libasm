@@ -12,36 +12,42 @@ _MAGENTA  =\e[35m
 _CYAN     =\e[96m
 _WHITE    =\e[97m
 
-# Compiler and flags 
+# Compiler and flags
 ASM				= nasm
 CC				= gcc
-ASMFLAGS		= -f elf64		# -fPIC : for position independent code
-CCFLAGS			= -Wall -Wextra -Werror 	# -fPIE : for position independent executable
-LIB				= ar rcs $@ $^ 
+ASMFLAGS		= -f elf64
+CCFLAGS			= -Wall -Wextra -Werror
+LIB				= ar rcs $@ $^
 
 # Directory
 SRC_DIR			= source
 OBJ_DIR			= object
 
-# Files	
+# Files
 ASM_SRCS			:= $(shell find $(SRC_DIR) -name '*.s')
-C_SRC				= main.c
 ASM_OBJS 			= $(patsubst $(SRC_DIR)/%.s, $(OBJ_DIR)/%.o, $(ASM_SRCS))
-C_OBJ				= $(OBJ_DIR)/main.o
+
+C_SRC				= mandatory.c
+C_SRC_BONUS			= bonus.c
+
+C_OBJ				= $(OBJ_DIR)/mandatory.o
+C_OBJ_BONUS			= $(OBJ_DIR)/bonus.o
 
 # Targets
-all				: $(OBJ_DIR) libasm.a test
+all					: $(OBJ_DIR) libasm.a
 
-$(OBJ_DIR)		:
-					@mkdir -p $(OBJ_DIR)
+$(OBJ_DIR)			:
+						@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o		: $(SRC_DIR)/%.s
-					@echo "Assembling $< to $@"
-					@$(ASM) $(ASMFLAGS) -o $@ $<
+						@echo "Assembling $< to $@"
+						@$(ASM) $(ASMFLAGS) -o $@ $<
 
-$(C_OBJ)		: $(C_SRC)
-					$(CC) $(CCFLAGS) -c -o $@ $<
+$(C_OBJ)			: $(C_SRC)
+						$(CC) $(CCFLAGS) -c -o $@ $<
 
+$(C_OBJ_BONUS)		: $(C_SRC_BONUS)
+						$(CC) $(CCFLAGS) -c -o $@ $<
 
 # Archive tool
 libasm.a		: $(ASM_OBJS)
@@ -57,8 +63,11 @@ libasm.a		: $(ASM_OBJS)
 					done
 					@printf "\n$(_GREEN)$(_BOLD)Compiling process finish$(_R)\n"
 
-test			: libasm.a $(C_OBJ)
-					$(CC) -no-pie $(CCFLAGS) -o $@ $(C_OBJ) libasm.a
+mandatory			: libasm.a $(C_OBJ)
+						$(CC) -no-pie $(CCFLAGS) -o test $(C_OBJ) libasm.a
+
+bonus				: libasm.a $(C_OBJ_BONUS)
+						$(CC) -no-pie $(CCFLAGS) -o test $(C_OBJ_BONUS) libasm.a
 
 clean			:
 					@echo "Cleaning up object files..."

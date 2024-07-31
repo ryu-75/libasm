@@ -3,37 +3,37 @@ section .data
         info resq 1
         next resq 1
     endstruc
-    len: equ $ - node 
 
 section .text
-    global ft_lst_size
+    global ft_list_size     ; ft_list_size(t_list *begin_list);
 
-ft_lst_size:
-    xor rcx, rcx
+ft_list_size:
+    xor rcx, rcx            ; Set rcx to 0 (Counter)
 
-    push rbp
-    mov rbp, rsp
+    push rbp                ; Save the old base pointer
+    mov rbp, rsp            ; Setup a new base pointer
 
-    push rbx
+    push rbx                ; Save rbx to use it for traversing the list
+    mov rbx, rdi            ; Move the 1st argument (our list)
 
-    mov rbx, rdi
-
-    cmp rbx, 0
-    je nullpointer 
+    test rbx, rbx           ; Check if the list is empty
+    je nullpointer          ; Jump if the list is NULL
 
 next_element:
-    inc rcx
-    mov rdx, [rdx + next]
-    cmp rdx, 0
-    jne next_element
+    inc rcx                 ; Increment rcx
+    mov rdx, [rdx + next]   ; Mov to the next node
+    test rdx, rdx           ; Check if the next node is empty
+    jne next_element        ; Loop until the next node is not empty
 
 end_of_list:
-    pop rbx
-    mov rax, rcx
-    mov rsp, rbp
-    pop rbp
-    ret
+    pop rbx                 ; Retrieve head of list from stack
+
+    mov rax, rcx            ; Move rcx to rax (rax = Counter)
+    mov rsp, rbp            ; Move base pointer to stack pointer
+
+    pop rbp                 ; Retrieve base pointer from stack
+    ret                     ; Return index
 
 nullpointer:
-    xor rax, rax
-    jmp end_of_list
+    xor rax, rax            ; rax = 0 if the list is empty
+    jmp end_of_list         ;

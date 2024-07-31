@@ -1,7 +1,7 @@
-; Reminder :
-            ; movzx : It move a byte or word from one operand to a register, zero-extending the value to fill the destination register.
+; movzx : It move a byte or word from one operand to a register
+                    ; zero-extending the value to fill the destination register.
 
-global ft_strcmp                ; int ft_strcmp(const char *s1, const char *s2)
+global ft_strcmp                    ; int ft_strcmp(const char *s1, const char *s2)
 
 ft_strcmp:
 .loop:
