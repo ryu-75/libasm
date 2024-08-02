@@ -43,8 +43,6 @@ The **text** section is used for keeping the actual code. This section must begi
 
 ```asm
 section .text
-    global _start ;or name of your function
-    _start
 ```
 
 ## 💾 Registers
