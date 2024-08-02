@@ -1,10 +1,10 @@
 # LIBASM
-## :book: Introduction
+## 📝 Introduction
 During this piscine, I learned the basic knowledge to know about **assembly** language or as it often call **asm**. 
 
 I will explain everything I learned about it !
 
-## Compiling
+## ⚙️ Compiling
 To compile this library, ensure that both the `nasm` and `gcc` compilers installed on your system.
 
 This library can only be compiled on a Linux system.
@@ -17,7 +17,7 @@ To test `ft_list_size`, run `make bonus`. This will create an executable named `
 
 To test the remaining functions, run `make mandatory`.
 
-## Basic Syntax
+## 📜 Basic Syntax
 It's not applied here but it's good to know !
 
 An **assembly** program can be divided into `3 sections`.
@@ -29,7 +29,7 @@ The **data** section is used for declaring initialized data or constants. This *
 section .data
 ```
 
-## **bss** section
+### **bss** section
 The **bss** section is used for declaring variables.
 
 **Declaring bss section**
@@ -38,7 +38,7 @@ The **bss** section is used for declaring variables.
 section .bss
 ```
 
-## **text** section
+### **text** section
 The **text** section is used for keeping the actual code. This section must begin with the declaration **global _start**, which tells the kernel where the program execution begins.
 
 **Declaring text section**
@@ -49,7 +49,7 @@ section .text
     _start
 ```
 
-## Registers
+## 💾 Registers
 Now, let's talk about registers !
 
 **Assembly** works maily with registers. They can be compared to litte pre-defined boxes that can store data.
@@ -66,7 +66,7 @@ The general purpose registers are :
  * **R8** corresponds to the 5th argument of a function
  * **R9** corresponds to the 6th argument of a function
 
-## Linux System Calls
+## 🐧 Linux System Calls
 We can make use of **Linux system calls** in your assembly programs.
 
 You need to take the following steps for using **Linux system calls** in your program.
@@ -104,10 +104,10 @@ The following table shows some of the system calls :
 |   5    | sys_open | const char* | int | int | - | - |
 |   6    | sys_close | unsigned int | - | - | - | - |
 
-## Syntax
+## ✏️ Syntax
 The syntax used here is the ***Intel*** syntax. It is the most common syntax used in assembly programming, and a requisite of the subject. It is characterized by the fact that that the destination operand is on the **left** and the source operand is on the **right**. 
 
-### Instructions
+### 🛠️📜 Instructions
 Virtually **all the lines in assembly** are composed of an **instruction followed by its operand(s)**.
 
 A few examples :
@@ -116,7 +116,7 @@ A few examples :
 - `cmp rax, 0` compares the value in the register `rax` with `0`.
 - `jmp loop` jumps to the label `loop`.
 
-## Addresses and values
+## 📍🔢 Addresses and values
 Like in **C**, we can work with addresses.
 
 The square brackets `[]` are used to dereference an address.
@@ -145,7 +145,7 @@ This table shows some of the common type specifiers :
 | `QWORD` | 8 |
 | `TBYTE` | 10 |
 
-## Exporting symbols
+## 📦 Exporting symbols
 In order to use the functions we write in assembly in a C program, we need to export them.
 
 To do so, we can use the `global` directive.
@@ -165,21 +165,21 @@ The `ft_strlen` function is a function that returns the length of a string.
 It is a very simple function that iterates over the string until it finds the null-terminator (`\0`).
 
 ```asm 
-global ft_strlen 					; ft_strlen(const char *str)
+global ft_strlen			; ft_strlen(const char *str)
 
 ft_strlen:
-	xor rcx, rcx					; Initialize rcx to 0, this will be our counter
+	xor rcx, rcx			; Initialize rcx to 0, this will be our counter
 
 .loop:
-	mov al, byte [rdi + rcx]		; Load the byte at address [rdi + rcx] into al
-	test al, al						; Perform a bitwise AND operation of `al` with itself to set the ZF flag
-	je .end							; If al is zero (end of string), jump to .end
-	inc rcx							; Increment rcx
-	jmp .loop						; Repeat the loop
+	mov al, byte [rdi + rcx]	; Load the byte at address [rdi + rcx] into al
+	test al, al			; Perform a bitwise AND operation of `al` with itself to set the ZF flag
+	je .end				; If al is zero (end of string), jump to .end
+	inc rcx				; Increment rcx
+	jmp .loop			; Repeat the loop
 
 .end:
-	mov rax, rcx					; Move the count (rcx) to rax (return value)
-	ret								; Return the result
+	mov rax, rcx			; Move the count (rcx) to rax (return value)
+	ret				; Return the result
 ```
 
 ## ft_strcpy
@@ -232,23 +232,23 @@ ft_strcmp:
 The `ft_strdup` function is used to duplicate a string from a source, it allocates memory for a new string and copies the source string into this newly allocated space.
 
 ```asm
-global ft_strdup	; char *ft_strdup(const char *s)
+global ft_strdup		; char *ft_strdup(const char *s)
 extern malloc
 extern ft_strlen
 extern ft_strcpy
 
 ft_strdup:
-	call ft_strlen 	; Call ft_strlen, that saves the length in rax
+	call ft_strlen 		; Call ft_strlen, that saves the length in rax
 	push rdi		; Push rdi (that contain *s)
 	inc rax			; Increment by 1 (for the null-terminator)
-	mov rdi, rax	; move the length (rax) to rdi
+	mov rdi, rax		; move the length (rax) to rdi
 	call malloc		; call malloc
-	test rax, rax	; verify if calloc return  -1
+	test rax, rax		; verify if calloc return  -1
 	jz err			; err if -1
 	pop rsi			; Pop *s from the stack to rsi (2nd arguments of ft_strcpy)
-	mov rdi, rax    ; move the allocated memory to rdi (1st argument of ft_strcpy)
-	call ft_strcpy	; call strcpy, copy rdi to rax
-	ret				; return rax
+	mov rdi, rax    	; move the allocated memory to rdi (1st argument of ft_strcpy)
+	call ft_strcpy		; call strcpy, copy rdi to rax
+	ret			; return rax
 
 err:
 	mov rax, -1		; set rax to -1 if malloc return -1
