@@ -18,8 +18,6 @@ To test `ft_list_size`, run `make bonus`. This will create an executable named `
 To test the remaining functions, run `make mandatory`.
 
 ## 📜 Basic Syntax
-It's not applied here but it's good to know !
-
 An **assembly** program can be divided into `3 sections`.
 ### **data** section
 The **data** section is used for declaring initialized data or constants. This **data** *does not change at runtime*.
