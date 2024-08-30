@@ -60,10 +60,12 @@ int main() {
     write(1, "\e[91mft_write: \e[0m", strlen("\e[91mft_write: \e[0m"));
     ft_write(1, text, strlen(text));
     write(1, "\n", 1);
+    printf("errno: %s\n\n", strerror(errno));
 
     write(1, "\e[92mwrite: \e[0m", strlen("\e[92mwrite: \e[0m"));
     write(1, text, strlen(text));
     write(1, "\n", 1);
+    printf("errno: %s\n\n", strerror(errno));
 
 // **********************************************************************************************
 
@@ -82,6 +84,7 @@ int main() {
 
     printf("\e[91mread: \e[0m'%s'\n", buf1);
     close(fd1);
+    printf("errno: %s\n\n", strerror(errno));
 
     char    buf2[1024];
     int fd2 = open("source/ft_strlen.s", O_RDONLY);
@@ -97,6 +100,7 @@ int main() {
 
     printf("\e[92mft_read: \e[0m'%s'\n", buf2);
     close(fd2);
+    printf("errno: %s\n\n", strerror(errno));
 
 // **********************************************************************************************
 

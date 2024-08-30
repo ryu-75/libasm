@@ -6,7 +6,7 @@ ft_read:                    ; ssize_t   ft_read(int fd, void *buf, size_t count)
     syscall
 
     test rax, rax           ; Check if rax return 0
-    jl  err                 ; If -1 return an error
+    je  err                 ; If -1 return an error
     ret                     ; Return rax
 
 err:
