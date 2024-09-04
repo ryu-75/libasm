@@ -9,14 +9,11 @@ extern size_t   ft_strlen(const char* str);
 extern char     *ft_strcpy(char* dest, const char* src);
 extern int      ft_strcmp(const char* s1, const char* s2);
 extern ssize_t  ft_write(int fd, const void *buf, size_t count);
-extern char *ft_strdup(const char *s);
+extern char     *ft_strdup(const char *s);
 extern ssize_t  ft_read(int fd, void *buf, size_t count);
 
-void    set_errno(int value) {
-    errno = value;
-}
 int main() {
-    const char  *text = "Hello World!";
+    const char  *text = "Hello World!\n";
 
     printf("***** \e[1mFT_STRLEN \e[0m*****\n");
 
@@ -57,15 +54,13 @@ int main() {
 
     printf("***** \e[1mFT_WRITE\e[0m*****\n");
 
-    write(1, "\e[91mft_write: \e[0m", strlen("\e[91mft_write: \e[0m"));
-    ft_write(1, text, strlen(text));
-    write(1, "\n", 1);
-    printf("errno: %s\n\n", strerror(errno));
-
     write(1, "\e[92mwrite: \e[0m", strlen("\e[92mwrite: \e[0m"));
     write(1, text, strlen(text));
-    write(1, "\n", 1);
-    printf("errno: %s\n\n", strerror(errno));
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+
+    write(1, "\e[91mft_write: \e[0m", strlen("\e[91mft_write: \e[0m"));
+    ft_write(1, text, ft_strlen(text));
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
 
 // **********************************************************************************************
 
@@ -83,8 +78,9 @@ int main() {
     buf1[bytes1] = '\0';
 
     printf("\e[91mread: \e[0m'%s'\n", buf1);
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+
     close(fd1);
-    printf("errno: %s\n\n", strerror(errno));
 
     char    buf2[1024];
     int fd2 = open("source/ft_strlen.s", O_RDONLY);
@@ -93,14 +89,13 @@ int main() {
         perror("open");
         return 1;
     }
-
     ssize_t  bytes2 = ft_read(fd2, buf2, sizeof(buf2) - 1);
 
     buf2[bytes2] = '\0';
 
     printf("\e[92mft_read: \e[0m'%s'\n", buf2);
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
     close(fd2);
-    printf("errno: %s\n\n", strerror(errno));
 
 // **********************************************************************************************
 
