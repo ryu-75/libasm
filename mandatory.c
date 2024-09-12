@@ -13,6 +13,7 @@ extern char     *ft_strdup(const char *s);
 extern ssize_t  ft_read(int fd, void *buf, size_t count);
 
 int main() {
+    int err = errno;
     const char  *text = "Hello World!\n";
 
     printf("***** \e[1mFT_STRLEN \e[0m*****\n");
@@ -54,13 +55,15 @@ int main() {
 
     printf("***** \e[1mFT_WRITE\e[0m*****\n");
 
-    write(1, "\e[92mwrite: \e[0m", strlen("\e[92mwrite: \e[0m"));
-    write(1, text, strlen(text));
-    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
-
     write(1, "\e[91mft_write: \e[0m", strlen("\e[91mft_write: \e[0m"));
     ft_write(1, text, ft_strlen(text));
     printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+    errno = err;
+
+    write(1, "\e[92mwrite: \e[0m", strlen("\e[92mwrite: \e[0m"));
+    write(1, text, strlen(text));
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+    errno = err;
 
 // **********************************************************************************************
 
@@ -79,6 +82,7 @@ int main() {
 
     printf("\e[91mread: \e[0m'%s'\n", buf1);
     printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+    errno = err;
 
     close(fd1);
 
@@ -95,6 +99,8 @@ int main() {
 
     printf("\e[92mft_read: \e[0m'%s'\n", buf2);
     printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+    errno = err;
+
     close(fd2);
 
 // **********************************************************************************************
@@ -103,9 +109,13 @@ int main() {
 
     char    *otherText = ft_strdup(text);
     printf("\e[92mft_dup\e[0m : %s = %s\n", text, otherText);
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+    errno = err;
     free (otherText);
 
     otherText = strdup(text);
     printf("\e[91mdup\e[0m : %s = %s\n", text, otherText);
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+    errno = err;
     free (otherText);
 }

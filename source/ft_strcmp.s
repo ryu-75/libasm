@@ -2,7 +2,6 @@
                     ; zero-extending the value to fill the destination register.
 
 global ft_strcmp                    ; int ft_strcmp(const char *s1, const char *s2)
-
 ft_strcmp:
 .loop:
     movzx rax, byte [rdi]           ; Load byte from memory at address in rdi into rax [64 bits], zero-extended
