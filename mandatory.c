@@ -1,26 +1,12 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <unistd.h>
-#include <errno.h>
-#include <fcntl.h>
-
-extern size_t   ft_strlen(const char* str);
-extern char     *ft_strcpy(char* dest, const char* src);
-extern int      ft_strcmp(const char* s1, const char* s2);
-extern ssize_t  ft_write(int fd, const void *buf, size_t count);
-extern char     *ft_strdup(const char *s);
-extern ssize_t  ft_read(int fd, void *buf, size_t count);
+#include "libasm.h"
 
 int main() {
-    int err = errno;
+    errno = 0;
     const char  *text = "Hello World!\n";
 
     printf("***** \e[1mFT_STRLEN \e[0m*****\n");
 
-    size_t  len = ft_strlen(text);
-
-    printf("\e[92mft_strlen: \e[0m%zu\n", len);
+    printf("\e[92mft_strlen: \e[0m%zu\n",  ft_strlen(text));
     printf("\e[91mstrlen: \e[0m%zu\n\n", strlen(text));
 
 // **********************************************************************************************
@@ -50,20 +36,34 @@ int main() {
     printf("\e[91mstrcmp: \e[0mCompare '%s' with '%s = %d\n", cmp, text, strcmp(cmp, text));
     printf("\e[92mft_strcmp: \e[0mCompare '%s' with '%s = %d\n", text, text, ft_strcmp(text, text));
     printf("\e[91mstrcmp: \e[0mCompare '%s' with '%s = %d\n\n", text, text, strcmp(text, text));
+ 
+// **********************************************************************************************
+
+    printf("***** \e[1mFT_STRDUP\e[0m*****\n");
+
+    char    *otherText = ft_strdup(text);
+    printf("\e[92mft_dup\e[0m : %s\n", ft_strdup("Hello world!"));
+    // free (otherText);
+
+    otherText = strdup(text);
+    printf("\e[91mdup\e[0m : %s = %s\n", text, otherText);
+    free (otherText);
 
 // **********************************************************************************************
 
     printf("***** \e[1mFT_WRITE\e[0m*****\n");
 
-    write(1, "\e[91mft_write: \e[0m", strlen("\e[91mft_write: \e[0m"));
-    ft_write(1, text, ft_strlen(text));
+    write(0, "\e[92mwrite: \e[0m", strlen("\e[92mwrite: \e[0m"));
+    write(0, text, strlen(text));
     printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
-    errno = err;
-
-    write(1, "\e[92mwrite: \e[0m", strlen("\e[92mwrite: \e[0m"));
-    write(1, text, strlen(text));
+    errno = 0;
+    write(0, "\e[91mft_write: \e[0m", strlen("\e[91mft_write: \e[0m"));
+    ft_write(0, text, ft_strlen(text));
     printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
-    errno = err;
+    errno = 0;
+    ft_write(-1, text, ft_strlen(text));
+    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
+    errno = 0;
 
 // **********************************************************************************************
 
@@ -82,8 +82,7 @@ int main() {
 
     printf("\e[91mread: \e[0m'%s'\n", buf1);
     printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
-    errno = err;
-
+    errno = 0;
     close(fd1);
 
     char    buf2[1024];
@@ -99,23 +98,8 @@ int main() {
 
     printf("\e[92mft_read: \e[0m'%s'\n", buf2);
     printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
-    errno = err;
-
+    errno = 0;
     close(fd2);
 
-// **********************************************************************************************
-
-    printf("***** \e[1mFT_STRDUP\e[0m*****\n");
-
-    char    *otherText = ft_strdup(text);
-    printf("\e[92mft_dup\e[0m : %s = %s\n", text, otherText);
-    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
-    errno = err;
-    free (otherText);
-
-    otherText = strdup(text);
-    printf("\e[91mdup\e[0m : %s = %s\n", text, otherText);
-    printf("\e[1mERRNO \e[0m: %s\n\n", strerror(errno));
-    errno = err;
-    free (otherText);
+    return 0;
 }

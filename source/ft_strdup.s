@@ -16,12 +16,14 @@ ft_strdup:
 	pop rsi			; Pop *s from the stack to rsi (2nd arguments of ft_strcpy)
 	mov rdi, rax    ; move the allocated memory to rdi (1st argument of ft_strcpy)
 	call ft_strcpy	; call strcpy, copy rdi to rax
-	ret				; return rax
+	jmp end				; return rax
 
 err:
-	neg rax
-	mov rdi, rax		; set rax to -1 if malloc return -1
+	mov rbx, rax		; set rax to -1 if malloc return -1
 	call __errno_location wrt ..plt
-	mov [rax], rdi
+	mov [rax], rbx
+	neg dword [rax]
 	mov rax, -1
-    ret				; return sys_call
+
+end:
+	ret

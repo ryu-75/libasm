@@ -12,12 +12,14 @@ _MAGENTA  =\e[35m
 _CYAN     =\e[96m
 _WHITE    =\e[97m
 
+NAME			= libasm.a
+
 # Compiler and flags
 ASM				= nasm
 CC				= gcc
 ASMFLAGS		= -f elf64
 CCFLAGS			= -Wall -Wextra -Werror
-LIB				= ar rcs $@ $^
+LIB				= ar rc
 
 # Directory
 SRC_DIR			= source
@@ -34,14 +36,14 @@ C_OBJ				= $(OBJ_DIR)/mandatory.o
 C_OBJ_BONUS			= $(OBJ_DIR)/bonus.o
 
 # Targets
-all					: $(OBJ_DIR) libasm.a
+all					: $(OBJ_DIR) $(NAME)
 
 $(OBJ_DIR)			:
 						@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o		: $(SRC_DIR)/%.s
 						@echo "Assembling $< to $@"
-						@$(ASM) $(ASMFLAGS) -o $@ $<
+						@$(ASM) $(ASMFLAGS) $< -o $@
 
 $(C_OBJ)			: $(C_SRC)
 						$(CC) $(CCFLAGS) -c -o $@ $<
@@ -50,25 +52,25 @@ $(C_OBJ_BONUS)		: $(C_SRC_BONUS)
 						$(CC) $(CCFLAGS) -c -o $@ $<
 
 # Archive tool
-libasm.a		: $(ASM_OBJS)
-					@printf "\n*******************$(_BLUE)$(_BOLD) LIBASM $(_R)*******************\n\n"
-					@printf "$(_BOLD)Creating archive $@ with objects:\n$(_R)"
-					@ls -l $(ASM_OBJS)
-					@printf "\n"
-					@$(LIB) $(ASM_OBJS)
-					@printf "$(_BOLD)Archive $@ created $(_GREEN)successfully.$(_R)\n\n"
-					@printf "$(WHITE)$(_BOLD)Compiling process:$(_R)\n"
-					@for src in $(ASM_SRCS); do \
-						echo "$$src"; \
-					done
-					@printf "\n$(_GREEN)$(_BOLD)Compiling process finish$(_R)\n"
+$(NAME)				: $(ASM_OBJS)
+						@printf "\n*******************$(_BLUE)$(_BOLD) LIBASM $(_R)*******************\n\n"
+						@printf "$(_BOLD)Creating archive $@ with objects:\n$(_R)"
+						@ls -l $(ASM_OBJS)
+						@printf "\n"
+						@$(LIB) $(NAME) $(ASM_OBJS)
+						@printf "$(_BOLD)Archive $@ created $(_GREEN)successfully.$(_R)\n\n"
+						@printf "$(WHITE)$(_BOLD)Compiling process:$(_R)\n"
+						@for src in $(ASM_SRCS); do \
+							echo "$$src"; \
+						done
+						@printf "\n$(_GREEN)$(_BOLD)Compiling process finish$(_R)\n"
 
-mandatory			: libasm.a $(C_OBJ)
-						$(CC) -no-pie $(CCFLAGS) -o test $(C_OBJ) libasm.a
+mandatory			: $(NAME) $(C_OBJ)
+						$(CC) $(CCFLAGS) -o test $(C_OBJ) -L. -lasm libasm.h
 
-bonus				: libasm.a $(C_OBJ_BONUS)
-						$(CC) -no-pie $(CCFLAGS) -o test $(C_OBJ_BONUS) libasm.a
-
+bonus				: $(NAME) $(C_OBJ_BONUS)
+						$(CC) $(CCFLAGS) -o test $(C_OBJ_BONUS) -L. -lasm libasm.h
+						
 clean			:
 					@echo "Cleaning up object files..."
 					@rm -rf $(OBJ_DIR)
