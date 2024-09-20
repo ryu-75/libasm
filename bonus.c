@@ -5,21 +5,17 @@
 #include <errno.h>
 #include <fcntl.h>
 
-
 typedef struct s_list {
     void    *data;
     struct s_list *next;
 }       t_list;
 
+extern int  ft_list_size(t_list *begin_list);
+
 void    ft_push(t_list **list, t_list *new);
 void    printList(t_list *head);
 t_list  *lst_new(void *content);
 
-extern int  ft_list_size(t_list *begin_list);
-
-void    set_errno(int value) {
-    errno = value;
-}
 
 int main() {
     t_list  *head = NULL;
